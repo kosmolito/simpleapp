@@ -1,13 +1,9 @@
-FROM centos
-# Add repo file
-ADD ./sander.repo /etc/yum.repos.d/
+FROM registry.access.redhat.com/ubi9:latest
 
-# Install cool software
-RUN yum --assumeyes update && \
-yum --assumeyes install \
-nmap iproute && \
-bash && \
-yum clean all
+# Install some applications
+RUN dnf -y update && \
+    dnf install -y nmap iproute bash && \
+    dnf clean all
 
 ENTRYPOINT ["/usr/bin/nmap"]
 CMD ["-sn", "172.17.0.0/24"] 
